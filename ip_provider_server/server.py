@@ -3,12 +3,11 @@ import sys
 from flask import Flask, jsonify
 import ip_provider as ipp
 import os
-import log
 import logging
 import configparser
 import argparse
-
 sys.path.append("..")  # Adds higher directory to python modules path.
+import log
 logger = logging.getLogger('werkzeug')
 logger.setLevel(logging.ERROR)
 

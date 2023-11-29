@@ -32,7 +32,7 @@ def get_ip_from_user(user, docker_id):
     if 200 <= response.status_code < 300:
         return response.json()
     else:
-        log.error("docker_handler", f"Couldn't lock IP: {response.status_code}")
+        log.error("docker_handler", f"Couldn't lock IP (ipv4) {response.status_code}")
         sys.exit(1)
 
 
@@ -70,7 +70,7 @@ def create(cn):
 
     response = requests.get(f"http://{HOST}:{PORT}/ipv6/lock_any/{cn}/{container.id}")
     if response.status_code < 200 or response.status_code > 299:
-        log.error("docker_handler", f"Couldn't lock any IP (ipv6): {response.status_code}")
+        log.error("docker_handler", f"Couldn't lock any IP (ipv6) {response.status_code}")
         return 1
     ipv6 = response.json().get("ip")
     ipv6_gateway = response.json().get("gateway")

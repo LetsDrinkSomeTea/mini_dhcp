@@ -10,7 +10,7 @@ import log
 config = configparser.ConfigParser()
 config_path = "../config.ini"
 config.read(config_path)
-HOST = config["SERVER"]["host"]
+URL = config["SERVER"]["host"]
 PORT = config["SERVER"]["port"]
 
 
@@ -19,7 +19,7 @@ def client_connect():
     if cn is None:
         return 1
 
-    response = requests.get(f"http://{HOST}:{PORT}/ipv4/lock_any/{cn}/openvpn")
+    response = requests.get(f"http://{URL}:{PORT}/ipv4/lock_any/{cn}/openvpn")
     if response.status_code < 200 or response.status_code > 299:
         log.error("openvpn", f"Couldn't lock any IP (ipv4): {response.status_code}")
         return 1
@@ -27,7 +27,7 @@ def client_connect():
     ipv4 = response.get("ip")
     gateway = response.get("gateway")
 
-    response = requests.get(f"http://{HOST}:{PORT}/ipv6/lock_any/{cn}/openvpn")
+    response = requests.get(f"http://{URL}:{PORT}/ipv6/lock_any/{cn}/openvpn")
     if response.status_code < 200 or response.status_code > 299:
         log.error("openvpn", f"Couldn't lock any IP (ipv6): {response.status_code}")
         return 1
@@ -48,12 +48,12 @@ def client_connect():
 
 def client_disconnect():
     cn = environ.get("common_name")
-    response = requests.put(f"http://{HOST}:{PORT}/ipv4/free_any/{cn}/openvpn")
+    response = requests.put(f"http://{URL}:{PORT}/ipv4/free_any/{cn}/openvpn")
     if response.status_code < 200 or response.status_code > 299:
         log.error("openvpn", f"Couldn't free IP (ipv4): {response.status_code}")
         return 1
 
-    response = requests.put(f"http://{HOST}:{PORT}/ipv6/free_any/{cn}/openvpn")
+    response = requests.put(f"http://{URL}:{PORT}/ipv6/free_any/{cn}/openvpn")
     if response.status_code < 200 or response.status_code > 299:
         log.error("openvpn", f"Couldn't free IP (ipv6): {response.status_code}")
         return 1
