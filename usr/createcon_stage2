@@ -1,0 +1,23 @@
+#!/bin/bash
+BIN="./docker_handler.py"
+GRP="/bin/grep"
+TR="/bin/tr"
+TAIL="/bin/tail"
+TEE="/bin/tee"
+ECHO="/bin/echo"
+DOCKER="/usr/bin/docker"
+
+RETR=$($BIN | $TEE /dev/tty)
+CID=$(echo $RETR | $TR ' ' '\n' | $TAIL -n1)
+
+if [[ -n $CID ]]; then
+  read stop
+  $DOCKER attach --detach-keys="ctrl-b,d" $CID
+  EXIT_CODE=$?
+  if [[ $EXIT_CODE -ne 0 ]]; then
+    exit $EXIT_CODE
+  fi
+  $ECHO "HAXXORing FIN,RST"
+  $BIN && exit 0
+  $ECHO "Container zerstoeren && Waescheklammer zurueckhaengen ..."
+fi

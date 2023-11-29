@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo ./createcon_stage2
