@@ -16,6 +16,7 @@ ipp.IPProvider.DB_PATH = "../ips.sqlite"
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument("-c", "--clean", action="store_true", help="Clean the database")
+argparser.add_argument("-v", "--verbose", action="store_true", help="Verbose logging")
 args = argparser.parse_args()
 
 config = configparser.ConfigParser()
@@ -26,6 +27,12 @@ config.read(config_path)
 if args.clean:
     if os.path.exists(ipp.IPProvider.DB_PATH):
         os.remove(ipp.IPProvider.DB_PATH)
+    if os.path.exists(log.LOG_PATH):
+        os.remove(log.LOG_PATH)
+if args.verbose:
+    log.VERBOSE = True
+else:
+    log.VERBOSE = False
 
 if not os.path.exists(ipp.IPProvider.DB_PATH):
     ipp.IPProvider.create_db()
