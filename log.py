@@ -48,3 +48,4 @@ def _print_and_log(log_string, color):
         log_file.write(log_string + "\n")
     if VERBOSE:
         print(f"\033{color}{log_string}\033[0m")
+        

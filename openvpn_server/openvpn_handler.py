@@ -32,13 +32,14 @@ def client_connect():
         log.error("openvpn", f"Couldn't lock any IP (ipv6): {response.status_code}")
         return 1
     ipv6 = response.json().get("ip")
+    gateway_v6 = response.json().get("gateway")
 
     try:
         with open(sys.argv[1], "w+") as ovpn:
             print(f"push \"setenv-safe hcipv6   '{ipv6}'\"", file=ovpn)
+            print(f"push \"setenv-safe hcipv6hc   '{gateway_v6}'\"", file=ovpn)
             print(f"push \"setenv-safe hcipv4   '{ipv4}'\"", file=ovpn)
             print(f"push \"setenv-safe hcipv4hc '{gateway}'\"", file=ovpn)
-            print(f"push \"setenv-safe ifconfig '{ipv4}")
     except Exception as e:
         print(e)
         return 1
